@@ -10,6 +10,8 @@ This script fetches real-time weather data from [wttr.in](https://wttr.in/) and 
 *   **Command-line Friendly:** Run the script with a simple command and optional arguments.
 
 ## 🚀 Getting Started
+### Optional
+* Create a Virtual Python Env
 
 ### 1. Prerequisites
 
@@ -55,7 +57,10 @@ You can change the default weather location by editing the `WEATHER_LOCATION` va
 # or a city name, zip code, or airport code (e.g., '~Dunlap+TN', 'London', '90210', 'KJFK').
 WEATHER_LOCATION = '37397'
 ```
-
+## Cron Tab Example
+```bash
+*/15 * * * * /bin/bash -c 'source /home/iaintshootinmis/code/meshtastic_weather/bin/activate && python /home/iaintshootinmis/code/meshtastic_weather/meshtastic_weather.py >> /home/iaintshootinmis/code/meshtastic_weather/meshtastic_weather.log 2>&1'
+```
 ##🤝 Contributing
 
 Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/iaintshootinmis/MeshWttr/issues).
