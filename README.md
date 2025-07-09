@@ -52,13 +52,13 @@ You can change the default weather location by editing the `WEATHER_LOCATION` va
 
 ```python
 # Your desired location for weather. Use 'auto' for automatic detection,
-# or a city name, zip code, or airport code (e.g., 'London', '90210', 'KJFK').
+# or a city name, zip code, or airport code (e.g., '~Dunlap+TN', 'London', '90210', 'KJFK').
 WEATHER_LOCATION = '37397'
 ```
 
 ##🤝 Contributing
 
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/your-username/meshtastic-weather/issues).
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/iaintshootinmis/MeshWttr/issues).
 
 ## 📝 License
 
