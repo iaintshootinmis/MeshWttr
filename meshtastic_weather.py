@@ -12,7 +12,7 @@ import sys
 SERIAL_PORT = '/dev/ttyACM0' 
 
 # Your desired location for weather. Use 'auto' for automatic detection,
-# or a city name, zip code, or airport code (e.g., 'London', '90210', 'KJFK').
+# or a city name, zip code, or airport code (e.g., '~Dunlap+TN', 'London', '90210', 'KJFK').
 WEATHER_LOCATION = '37397'
 
 # --- Fetch Weather Data ---
