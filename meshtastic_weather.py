@@ -68,25 +68,13 @@ Sunset: {sunset}
 Last Observation UTC: {obstime}"""
     return message
 
-# --- Send Meshtastic Message ---
 def send_meshtastic_message(message, serial_port, channel_index=0):
-    """Sends a message via Meshtastic over serial, splitting it into chunks if necessary."""
+    """Sends a message via Meshtastic over serial."""
     try:
-        # Connect to the Meshtastic device
         interface = meshtastic.serial_interface.SerialInterface(serial_port)
-        
-        if len(message) > 200:
-            print("Message is longer than 200 characters, splitting into chunks.")
-            chunks = [message[i:i+200] for i in range(0, len(message), 200)]
-            for i, chunk in enumerate(chunks):
-                print(f"Sending chunk {i+1}/{len(chunks)}: '{chunk}'")
-                interface.sendText(chunk, channelIndex=channel_index)
-                time.sleep(1) # Add a small delay between sending chunks
-        else:
-            interface.sendText(message, channelIndex=channel_index)
-            print(f"Message sent to Meshtastic on channel {channel_index}: '{message}'")
-        
-        # Close the interface
+        time.sleep(1) # Add a small delay to allow the interface to initialize
+        interface.sendText(message, channelIndex=channel_index)
+        print(f"Message sent to Meshtastic on channel {channel_index}: '{message}'")
         interface.close()
     except Exception as e:
         print(f"Error sending Meshtastic message: {e}")
@@ -104,12 +92,20 @@ if __name__ == "__main__":
     weather_data = get_weather(WEATHER_LOCATION)
     
     if weather_data:
-        weather_message = format_weather_message(weather_data)
-        print("\n--- Weather Message ---")
-        print(weather_message)
+        weather_message1, weather_message2 = format_weather_message(weather_data)
+        print("\n--- Weather Message 1 ---")
+        print(weather_message1)
         print("-----------------------\n")
         
+        if weather_message2:
+            print("\n--- Weather Message 2 ---")
+            print(weather_message2)
+            print("-----------------------\n")
+
         print(f"Attempting to send message to Meshtastic device on {SERIAL_PORT}...")
-        send_meshtastic_message(weather_message, SERIAL_PORT, channel_index=0)
+        send_meshtastic_message(weather_message1, SERIAL_PORT, channel_index=0)
+        if weather_message2:
+            time.sleep(7) # Add a small delay between sending messages
+            send_meshtastic_message(weather_message2, SERIAL_PORT, channel_index=0)
     else:
         print("Failed to retrieve weather data. Aborting Meshtastic message.")
