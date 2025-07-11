@@ -227,16 +227,29 @@ Last Obs UTC: {weather_info['obs_time']}"""
             return messages
 
     def connect_meshtastic(self) -> bool:
-        """Connect to Meshtastic device."""
+        """Connect to Meshtastic device, with fallback for /dev/ttyACM0."""
         try:
             logger.info(f"Connecting to Meshtastic device on {self.serial_port}")
             self.interface = meshtastic.serial_interface.SerialInterface(self.serial_port)
             time.sleep(1)  # Allow interface to initialize
-            logger.info("Connected to Meshtastic device")
+            logger.info(f"Connected to Meshtastic device on {self.serial_port}")
             return True
         except Exception as e:
-            logger.error(f"Failed to connect to Meshtastic device: {e}")
-            return False
+            logger.warning(f"Failed to connect on {self.serial_port}: {e}")
+            if self.serial_port == '/dev/ttyACM0':
+                logger.info("Attempting to connect on fallback port /dev/ttyUSB0")
+                try:
+                    fallback_port = '/dev/ttyUSB0'
+                    self.interface = meshtastic.serial_interface.SerialInterface(fallback_port)
+                    time.sleep(1)  # Allow interface to initialize
+                    logger.info(f"Connected to Meshtastic device on {fallback_port}")
+                    return True
+                except Exception as e2:
+                    logger.error(f"Failed to connect on primary port {self.serial_port} and fallback port {fallback_port}: {e2}")
+                    return False
+            else:
+                logger.error(f"Failed to connect to Meshtastic device: {e}")
+                return False
 
     def disconnect_meshtastic(self):
         """Disconnect from Meshtastic device."""
